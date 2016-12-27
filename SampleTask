@@ -1,0 +1,174 @@
+//: Playground - noun: a place where people can play
+
+import UIKit
+import Darwin
+
+struct busDetails {
+    var busNumber: Int
+    var seatCapacity: Int
+    var available: Int
+    let cost: Int
+    var bookings: [String]
+}
+
+class Travel {
+    var setc = busDetails(busNumber: 4567, seatCapacity: 7,available: 7,cost: 450, bookings: []);
+    var tnstc = busDetails(busNumber: 7890, seatCapacity: 5, available: 5,cost: 250, bookings: []);
+    var prtc = busDetails(busNumber: 8521, seatCapacity: 3, available: 3,cost: 200, bookings: []);
+    var irctc = busDetails(busNumber: 7826, seatCapacity: 10, available: 10,cost: 150, bookings: []);
+    var userDetails = [String: (numberOfBookings: Int, gender: String)]()
+    
+    init() {
+        print("1.SETC\n2.TNSTC\n3.PRTC\n4.IRCTC")
+    }
+    
+    func showTickets(_ busNumber: Int) {
+        switch busNumber {
+        case 1:
+            print("\nBus Number: \(setc.busNumber)\nSeat Capacity \(setc.seatCapacity)\nAvailable \(setc.available)\nCost \(setc.cost)")
+        case 2:
+            print("\nBus Number: \(tnstc.busNumber)\nSeat Capacity \(tnstc.seatCapacity)\nAvailable \(tnstc.available)\nCost \(setc.cost)")
+        case 3:
+            print("\nBus Number: \(prtc.busNumber)\nSeat Capacity \(prtc.seatCapacity)\nAvailable \(prtc.available)\nCost \(setc.cost)")
+        case 4:
+            print("\nBus Number: \(irctc.busNumber)\nSeat Capacity \(irctc.seatCapacity)\nAvailable \(irctc.available)\nCost \(setc.cost)")
+        default:
+            print("\nUser Input doesn't have any match")
+        }
+    }
+    
+    
+    func bookTickets(_ busNumber: Int, _ userName: String){
+        print("\n")
+        let statusCodes : [String] = ["", "Ticket successfully booked", "Higher usage limit reached", "User Id not found"]
+        
+        switch busNumber {
+        case 1:
+            if(setc.available > 0){
+                let statusCode = self.confirmTicket(userName)
+                
+                if statusCode == 1{
+                    setc.available -= 1
+                    setc.bookings.append(userName)
+                }
+                print(statusCodes[statusCode])
+            }else{
+                print("Seats Not available")
+            }
+        case 2:
+            if(tnstc.available > 0){
+                let statusCode = self.confirmTicket(userName)
+                
+                if statusCode == 1{
+                    tnstc.available -= 1
+                    tnstc.bookings.append(userName)
+                }
+                
+                print(statusCodes[statusCode])
+            }else{
+                print("Seats Not available")
+            }
+        case 3:
+            if(prtc.available > 0){
+                let statusCode = self.confirmTicket(userName)
+                
+                if statusCode == 1{
+                    prtc.available -= 1
+                    prtc.bookings.append(userName)
+                }
+                print(statusCodes[statusCode])
+            }else{
+                print("Seats Not available")
+            }
+        case 4:
+            if(irctc.available > 0){
+                let statusCode = self.confirmTicket(userName)
+                
+                if statusCode == 1{
+                    irctc.available -= 1
+                    irctc.bookings.append(userName)
+                }
+                print(statusCodes[statusCode])
+            }else{
+                print("Seats Not available")
+            }
+        default:
+            print("Invalid bus number passed")
+        }
+    }
+    
+    func confirmTicket(_ userName: String) -> Int{
+        var statusCode: Int = 0
+        if(self.isUserExist(userName) == true){
+            if(self.userDetails[userName]?.numberOfBookings ?? nil == 0){
+                let curGender = self.userDetails[userName]?.gender ?? "Male"
+                
+                self.userDetails[userName] = (1, curGender)
+                
+                statusCode = 1
+            }else{
+                statusCode = 2
+            }
+        }else{
+            statusCode = 3
+        }
+        
+        return statusCode
+    }
+    
+    func newUser(_ userName: String, _ gender: String){
+        if(self.isUserExist(userName) == false){
+            self.userDetails[userName] = (0, gender)
+            print("User Id \"\(userName)\" Successfully Created")
+        }else{
+            print("User Name Exist")
+        }    }
+    
+    func isUserExist(_ userName: String) -> Bool{
+        let userIsExist = self.userDetails[userName] ?? nil;
+        if(userIsExist == nil){
+            return false
+        }else{
+            return true
+        }
+    }
+    
+    func getBookingInfo(_ busNumber: Int){
+        switch busNumber {
+        case 1:
+            print("\n\(setc.bookings.count) result(s) found")
+            for item in setc.bookings{
+                print(item)
+            }
+        case 2:
+            print("\n\(setc.bookings.count) result(s) found")
+            for item in setc.bookings{
+                print(item)
+            }
+        case 3:
+            print("\n\(setc.bookings.count) result(s) found")
+            for item in setc.bookings{
+                print(item)
+            }
+        case 4:
+            print("\n\(setc.bookings.count) result(s) found")
+            for item in setc.bookings{
+                print(item)
+            }
+        default:
+            print("Invalid Bus number found")
+        }
+    }
+}
+
+let NewTravel = Travel()
+
+NewTravel.showTickets(2)
+
+NewTravel.bookTickets(2, "Gopinath")
+
+NewTravel.newUser("Gopinath", "Male")
+
+NewTravel.bookTickets(2, "Gopinath")
+
+NewTravel.getBookingInfo(2)
